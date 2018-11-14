@@ -1,16 +1,21 @@
-var obj1 = {nom: "Dupont", prenom: 'Rémi', age:15}
+/**
+ * Définir une fonction renvoyant l'état et le temps d'attente de toutes les attractions du parc.
+ * 
+ * Utiliser cette fonction pour afficher ces infos dans la console.
+ */
 
-// Déclarations et valorisation de variables à partir d'un objet 
-let {prenom,age} = obj1
-console.log(prenom)
-console.log(age)
+let parcUtils = (function(parc){
+    return {
+        getTempsEtEtatsAttractions: () => {
+            return parc.regions.flatMap( region => {
+                let attractions = Object.values(region.attractions)
+                return attractions.map( attraction => ({region: region.nom, 
+                                                        nom: attraction.nom, 
+                                                        temps: attraction.attente, 
+                                                        etat: attraction.marche }))
+            })
+        }
+    }
+})(parc)
 
-// Création d'un objet à partir de variables 
-var obj2 = {prenom, age}  // var obj2 = {prenom: prenom, age: age}
-
-delete obj1.nom
-
-var getCar = (marque, modele, couleur) => ({marque, modele, couleur}) 
-
-Object.keys(obj1)
-Object.values(obj1)
+console.log(parcUtils.getTempsEtEtatsAttractions())
