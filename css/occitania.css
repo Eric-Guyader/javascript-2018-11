@@ -1,0 +1,10 @@
+#etatAttractions li{
+    position:relative;
+}
+
+.tooltip{
+    position: absolute;
+    top:2.6em;
+    left:1.2em;
+    z-index:1;
+}

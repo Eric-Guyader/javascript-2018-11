@@ -49,6 +49,11 @@ let parcUtils = (function(parc){
                 } else {
                     $iIconeEtat.classList.add('has-text-danger')
                 }
+                $divRegion = document.createElement('div')
+                $divRegion.className = "tag is-info tooltip is-hidden"
+                $divRegion.appendChild(document.createTextNode(attraction.region))
+                $liEtatAttraction.appendChild($divRegion)
+
                 $liEtatAttraction.insertBefore($iIconeEtat, $liEtatAttraction.firstChild)
                 
                 
@@ -60,7 +65,18 @@ let parcUtils = (function(parc){
     }
 })(parc)
 
+let domReady = () => {
+    document.querySelector('#etatAttractions').appendChild(
+        parcUtils.widgetTempsAttente()
+    )
 
-document.querySelector('#etatAttractions').appendChild(
-    parcUtils.widgetTempsAttente()
-)
+    document.getElementById('etatAttractions').addEventListener('mouseover',(ev) => {
+        let $liEtat = ev.target.closest('li')
+        $liEtat.querySelector('.tooltip').classList.remove('is-hidden')
+        $liEtat.addEventListener('mouseout',function(){
+            this.querySelector('.tooltip').classList.add('is-hidden')
+        },{once: true}) 
+    }) 
+}
+
+window.addEventListener('DOMContentLoaded', domReady);
