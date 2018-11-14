@@ -14,8 +14,53 @@ let parcUtils = (function(parc){
                                                         temps: attraction.attente, 
                                                         etat: attraction.marche }))
             })
+        },
+
+        widgetTempsAttente(attractions) {
+            if( !attractions ) {
+                attractions = this.getTempsEtEtatsAttractions()
+            }
+            let $ulEtatAttractions = document.createElement('ul')
+            attractions.forEach( attraction => {
+                const $liEtatAttraction = document.createElement('li')
+                $liEtatAttraction.className = 'is-size-4'
+                $liEtatAttraction.innerText = ` ${attraction.nom} `
+                
+                const $iIconeEtat = document.createElement('i')
+                $iIconeEtat.className = 'fas fa-traffic-light'
+                if(attraction.etat){
+                    $iIconeEtat.classList.add('has-text-success')
+            
+                    const $spanAttente = document.createElement('span')
+                    $spanAttente.className = 'is-size-6'
+                    const $iIconeAttente = document.createElement('i')
+                    $iIconeAttente.className = 'fas fa-stopwatch'
+                    if(attraction.temps <= 15){
+                        $iIconeAttente.classList.add('has-text-success')
+                    } else if (attraction.temps <= 45) {
+                        $iIconeAttente.classList.add('has-text-warning')
+                    } else {
+                        $iIconeAttente.classList.add('has-text-danger')
+                    }
+            
+                    $spanAttente.appendChild($iIconeAttente)
+                    $spanAttente.appendChild(document.createTextNode(attraction.temps + ' minutes'))    
+                    $liEtatAttraction.appendChild($spanAttente)
+                } else {
+                    $iIconeEtat.classList.add('has-text-danger')
+                }
+                $liEtatAttraction.insertBefore($iIconeEtat, $liEtatAttraction.firstChild)
+                
+                
+                $ulEtatAttractions.appendChild($liEtatAttraction)
+            })
+            return $ulEtatAttractions
         }
+        
     }
 })(parc)
 
-console.log(parcUtils.getTempsEtEtatsAttractions())
+
+document.querySelector('#etatAttractions').appendChild(
+    parcUtils.widgetTempsAttente()
+)
